@@ -14,7 +14,7 @@ WEB_PASS = Password // The password for the login on the web interface (port 80)
 BACKUP_WORLDS = "world world_nether world_the_end" // The names of the world that will be backed up
 BACKUP_DAYS = 3 // Number of days the backups will keep stored
 HISTORY = 1024 // Log history for the screen command
-JAVA_ARGS = "-Xmx4G -Xms1G -Xmn768m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled
+JAVA_ARGS = "-Xmx2G -Xms1G -Xmn768m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled
 -XX:+PerfDisableSharedMem -XX:-UsePerfData -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=6 -XX:ConcGCThreads=2 -XX:+UseG1GC
 -XX:+UseCompressedOops -XX:InitiatingHeapOccupancyPercent=50 -XX:G1HeapRegionSize=1 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=8
 -Dfile.encoding=UTF8" // The Java Server arguments when running minecraft
