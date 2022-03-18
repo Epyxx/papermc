@@ -1,0 +1,164 @@
+#!/bin/bash
+# (c) 2022 Epyx
+# /etc/init.d/minecraft
+# version 1.0.0 2019-02-16 (YYYY-MM-DD)
+#
+### BEGIN INIT INFO
+# Provides:   minecraft
+# Required-Start: $local_fs $remote_fs screen-cleanup
+# Required-Stop:  $local_fs $remote_fs
+# Should-Start:   $network
+# Should-Stop:    $network
+# Default-Start:  2 3 4 5
+# Default-Stop:   0 1 6
+# Short-Description:    Minecraft server
+# Description:    Starts the minecraft server
+### END INIT INFO
+
+#Settings
+USERNAME='minecraft'
+MCPATH='/opt/minecraft'
+INVOCATION="java -server $JAVA_ARGS -jar $SERVICE.jar nogui"
+
+ME=`whoami`
+as_user() {
+  if [ "$ME" = "$USERNAME" ] ; then
+    bash -c "$1"
+  else
+    su - "$USERNAME" -c "$1"
+  fi
+}
+
+mc_start() {
+  if  pgrep -u $USERNAME -f $SERVICE.jar > /dev/null
+  then
+    echo "PaperMC is already running!"
+  else
+    echo "Starting PaperMC..."
+    cd $MCPATH
+    as_user "cd $MCPATH && screen -h $HISTORY -dmS minecraft $INVOCATION"
+    sleep 7
+    if pgrep -u $USERNAME -f $SERVICE.jar > /dev/null
+    then
+      echo "PaperMC is running now."
+    else
+      echo "Error! Could not start PaperMC!"
+    fi
+  fi
+}
+
+mc_saveoff() {
+  if pgrep -u $USERNAME -f $SERVICE.jar > /dev/null
+  then
+    echo "PaperMC is running... suspending saves"
+    #as_user "screen -p 0 -S minecraft -X eval 'stuff \"say SERVER BACKUP GESTARTET. Schreibschutz aktiviert...\"\015'"
+    as_user "screen -p 0 -S minecraft -X eval 'stuff \"save-off\"\015'"
+    as_user "screen -p 0 -S minecraft -X eval 'stuff \"save-all\"\015'"
+    sync
+    sleep 5
+  else
+    echo "PaperMC is not running. Not suspending saves."
+  fi
+}
+
+mc_saveon() {
+  if pgrep -u $USERNAME -f $SERVICE.jar > /dev/null
+  then
+    echo "PaperMC is running... re-enabling saves"
+    as_user "screen -p 0 -S minecraft -X eval 'stuff \"save-on\"\015'"
+  else
+    echo "PaperMC is not running. Not resuming saves."
+  fi
+}
+
+mc_stop() {
+  if pgrep -u $USERNAME -f $SERVICE.jar > /dev/null
+  then
+    echo "Stop PaperMC"
+    as_user "screen -p 0 -S minecraft -X eval 'stuff \"save-all\"\015'"
+    as_user "screen -p 0 -S minecraft -X eval 'stuff \"stop\"\015'"
+    sleep 7
+  else
+    echo "PaperMC is not running."
+  fi
+  if pgrep -u $USERNAME -f $SERVICE.jar > /dev/null
+  then
+    echo "Error! Could not stop PaperMC."
+  else
+    echo "PaperMC stopped."
+  fi
+}
+
+mc_backup() {
+   mc_saveoff
+
+   NOW=`date "+%Y-%m-%d_%Hh%M"`
+   BACKUP_FILE="$MCPATH/backup/worlds_${NOW}.tar.gz"
+   EXCLUDE_PATTERN=`echo $BACKUP_WORLDS | sed 's/\ /" --exclude="/g'`
+   CONFIG_BACKUP="$MCPATH/backup/config.tar.gz"
+
+   echo "Delete old backup files..."
+   find $MCPATH/backup/ -type f -mtime +$BACKUP_DAYS -execdir rm -- '{}' \;
+
+   echo "Backup Minecraft worlds..."
+   as_user "tar -C \"$MCPATH\" -czf \"$BACKUP_FILE\" $BACKUP_WORLDS"
+
+   echo "Backup configuration..."
+   as_user "tar -C \"$MCPATH\" --exclude=\"backup\" --exclude=\"build\" --exclude=\"$EXCLUDE_PATTERN\" -czf \"$CONFIG_BACKUP\" ."
+
+   mc_saveon
+   echo "Done."
+}
+
+mc_command() {
+  command="$1";
+  if pgrep -u $USERNAME -f $SERVICE.jar > /dev/null
+  then
+    pre_log_len=`wc -l "$MCPATH/logs/latest.log" | awk '{print $1}'`
+    echo "PaperMC is running... Executing command"
+    as_user "screen -p 0 -S minecraft -X eval 'stuff \"$command\"\015'"
+    sleep .1 # assumes that the command will run and print to the log file in less than .1 seconds
+    # print output
+    tail -n $[`wc -l "$MCPATH/logs/latest.log" | awk '{print $1}'`-$pre_log_len] "$MCPATH/logs/latest.log"
+  fi
+}
+
+#Start-Stop here
+case "$1" in
+  start)
+    mc_start
+    ;;
+  stop)
+    mc_stop
+    ;;
+  restart)
+    mc_stop
+    mc_start
+    ;;
+  backup)
+    mc_backup
+    ;;
+  status)
+    if pgrep -u $USERNAME -f $SERVICE.jar > /dev/null
+    then
+      echo "Running"
+    else
+      echo "Stopped"
+    fi
+    ;;
+  command)
+    if [ $# -gt 1 ]; then
+      shift
+      mc_command "$*"
+    else
+      echo "Server command has to be given (try 'help'?)"
+    fi
+    ;;
+
+  *)
+  echo "Usage: $0 {start|stop|backup|status|restart|command \"Server command\"}"
+  exit 1
+  ;;
+esac
+
+exit 0
