@@ -1,5 +1,5 @@
 ## Docker repository for epyx/papermc
-#### This is an lightweight paper minecraft server with advanced web interface.
+#### This is a lightweight paper minecraft server with advanced web interface.
 
 This image is based on Alpine Linux and uses the following additional packages:
 > openjdk17-jre-headless screen curl jq bash apache2 apache2-utils php7 php7-mbstring php7-json php7-apache2
