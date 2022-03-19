@@ -4,7 +4,7 @@ if ( $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest" AND ( $_SERVER["HTTP_
 	include("systeminfo.php");
 	$cpuLoad = getServerLoad();
 	$memoryLoad = getSystemMemInfo();
-	$status = @json_decode(@file_get_contents("https://api.minetools.eu/ping/".$_SERVER["SERVER_ADDR"]."/".$server_port),true);
+	$status = @json_decode(@file_get_contents("https://api.minetools.eu/ping/".$_SERVER["HTTP_HOST"]."/".$server_port),true);
 	if(!$status){ $status = array(); }
 	$spacefree = disk_free_space("/");
 	$spacetotal = disk_total_space("/");
