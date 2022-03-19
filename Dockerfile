@@ -18,7 +18,7 @@ ARG ALPINE_VER=3.15.1
 FROM alpine:${ALPINE_VER}
 COPY ./start.sh /root/
 RUN apk update && apk upgrade && \
-    apk add --no-cache openjdk17-jre-headless screen curl jq bash apache2 apache2-utils php7 php7-mbstring php7-json php7-apache2 && \
+    apk add --no-cache openjdk17-jre-headless screen curl jq bash apache2 apache2-utils php7 php7-mbstring php7-openssl php7-json php7-apache2 && \
     rm -rf /var/cache/apk/* && \
     rm -f /var/www/localhost/htdocs/index.html && \
 	echo '0	6	*	*	*	/etc/init.d/minecraft backup' > /etc/crontabs/root && \
@@ -46,9 +46,6 @@ ENV WEB_PASS=UseAStrongPasswordHere
 ENV BACKUP_WORLDS="world world_nether world_the_end"
 ENV BACKUP_DAYS=3
 ENV HISTORY=1024
-ENV JAVA_ARGS="-Xmx2G -Xms1G -Xmn768m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled \
--XX:+PerfDisableSharedMem -XX:-UsePerfData -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=6 -XX:ConcGCThreads=2 -XX:+UseG1GC \
--XX:+UseCompressedOops -XX:InitiatingHeapOccupancyPercent=50 -XX:G1HeapRegionSize=1 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=8 \
--Dfile.encoding=UTF8"
+ENV JAVA_ARGS="-Xmx2G -Xms1G -Xmn768m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled -XX:+PerfDisableSharedMem -XX:-UsePerfData -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=6 -XX:ConcGCThreads=2 -XX:+UseG1GC -XX:+UseCompressedOops -XX:InitiatingHeapOccupancyPercent=50 -XX:G1HeapRegionSize=1 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=8 -Dfile.encoding=UTF8"
 WORKDIR /opt/minecraft
 ENTRYPOINT ["/root/start.sh"]
