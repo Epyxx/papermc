@@ -1,5 +1,5 @@
 <?php
-if ( $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest" AND ( $_SERVER["HTTP_REFERER"] == "https://".$_SERVER["SERVER_NAME"]."/" OR $_SERVER["HTTP_REFERER"] == "http://".$_SERVER["SERVER_NAME"]."/" ) ) {
+if ( $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest" AND ( $_SERVER["HTTP_REFERER"] == "https://".$_SERVER["SERVER_NAME"]."/" OR $_SERVER["HTTP_REFERER"] == "https://".$_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"]."/" OR $_SERVER["HTTP_REFERER"] == "http://".$_SERVER["SERVER_NAME"]."/" OR $_SERVER["HTTP_REFERER"] == "http://".$_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"]."/" ) ) {
 	require_once("config.php");
 	include("systeminfo.php");
 	$cpuLoad = getServerLoad();

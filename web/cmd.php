@@ -2,7 +2,9 @@
 if ( (@$_POST["cmd"] OR @$_POST["action"])
 AND $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"
 AND ( $_SERVER["HTTP_REFERER"] == "https://".$_SERVER["SERVER_NAME"]."/"
-OR $_SERVER["HTTP_REFERER"] == "http://".$_SERVER["SERVER_NAME"]."/" ) ) {
+OR $_SERVER["HTTP_REFERER"] == "https://".$_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"]."/"
+OR $_SERVER["HTTP_REFERER"] == "http://".$_SERVER["SERVER_NAME"]."/"
+OR $_SERVER["HTTP_REFERER"] == "http://".$_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"]."/" ) ) {
 	include("config.php");
 	if($_POST["action"] == "on") {
 		$exec2 = "start";
