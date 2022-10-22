@@ -11,8 +11,8 @@ There are the following environment variables you can change:
 ```
 SERVICE = paper // Defines the minecraft paper server type. There are the following options: paper,travertine,waterfall,velocity
 VERSION = 1.19.2 // Sets the version of the server that will be downloaded/updated on every start
-WEB_USER = Username // The username for the login on the web interface (port 80)
-WEB_PASS = Password // The password for the login on the web interface (port 80)
+WEB_USER = mcadmin // The username for the login on the web interface (port 80)
+WEB_PASS = UseAStrongPasswordHere // The password for the login on the web interface (port 80)
 BACKUP_WORLDS = "world world_nether world_the_end" // The names of the world that will be backed up
 BACKUP_DAYS = 3 // Number of days the backups will keep stored
 HISTORY = 1024 // Log history for the screen command
