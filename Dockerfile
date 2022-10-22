@@ -14,11 +14,11 @@
 #     You should have received a copy of the GNU General Public License along
 #     with this program; if not, write to the Free Software Foundation, Inc.,
 #     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-ARG ALPINE_VER=3.15.1
+ARG ALPINE_VER=latest
 FROM alpine:${ALPINE_VER}
 COPY ./start.sh /root/
 RUN apk update && apk upgrade && \
-    apk add --no-cache openjdk17-jre-headless screen curl jq bash apache2 apache2-utils php7 php7-mbstring php7-openssl php7-json php7-apache2 && \
+    apk add --no-cache openjdk17-jre-headless screen curl jq bash apache2 apache2-utils php8 php8-mbstring php8-openssl php8-apache2 && \
     rm -rf /var/cache/apk/* && \
     rm -f /var/www/localhost/htdocs/index.html && \
 	echo '0	6	*	*	*	/etc/init.d/minecraft backup' > /etc/crontabs/root && \
