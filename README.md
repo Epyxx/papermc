@@ -8,7 +8,7 @@ This image is based on Alpine Linux and uses the following additional packages:
 
 There are the following environment variables you can change:
 
-```
+```ts
 SERVICE = paper // Defines the minecraft paper server type. There are the following options: paper,travertine,waterfall,velocity
 VERSION = 1.19.2 // Sets the version of the server that will be downloaded/updated on every start
 WEB_USER = mcadmin // The username for the login on the web interface (port 80)
@@ -25,6 +25,6 @@ JAVA_ARGS = "-Xmx2G -Xms1G -Xmn768m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -
 There are also 2 volumes that you can mount/use
 
 ```
-/opt/minecraft = The main minecraft directory
-/var/www/localhost/htdocs = The webserver directory
+/opt/minecraft -- The main minecraft directory
+/var/www/localhost/htdocs -- The webserver directory
 ```
