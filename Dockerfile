@@ -40,7 +40,7 @@ VOLUME /opt/minecraft
 EXPOSE 80
 EXPOSE 25565
 ENV SERVICE=paper
-ENV VERSION=1.18.2
+ENV VERSION=1.19.2
 ENV WEB_USER=mcadmin
 ENV WEB_PASS=UseAStrongPasswordHere
 ENV BACKUP_WORLDS="world world_nether world_the_end"
