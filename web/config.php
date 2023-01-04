@@ -9,7 +9,7 @@ $log_file = "latest.log"; // The Minecraft log file ($mc_path/logs/$log_file)
 $forbidden = array($mc_server,$mc_server.".old"); // List of forbidden filenames to show in browser (relativ zu $mc_path)
 $allow_mode = true;	// true = Allow file extensions, false = Deny file extensions
 $hide_forbidden = true; // Hide forbidden files and file types completly in File browser
-$allowed_types = array("txt","yml","json","properties","sh","log","mcmeta","gz","jar","db"); // List of allowed file extensions
+$allowed_types = array("txt","yml","json","properties","sh","log","mcmeta","gz","jar","db","zip"); // List of allowed file extensions
 $denied_types = array("jar","old","png","dat","dat_old","mca","lock","tar","gz"); // List of forbidden file extensions
 $server_cfg = "server.properties"; // MC Server config file
 
